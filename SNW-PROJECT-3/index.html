@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CivicLens - Bangalore</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-box">
+            <h2>CivicLens</h2>
+            <p class="hint">Sign in to report civic issues in Bangalore</p>
+            <input type="text" id="loginUser" placeholder="Username">
+            <input type="password" id="loginPass" placeholder="Password">
+            <div class="login-error" id="loginError"></div>
+            <button onclick="doLogin()" style="width:100%; margin-top:10px;">Login</button>
+            <p style="margin-top:10px; font-size:0.8rem; color:#888;">
+                Demo: <strong>admin</strong> / <strong>1234</strong>
+            </p>
+        </div>
+    </div>
+
+    <div class="sidebar-overlay" id="sidebarOverlay" onclick="closeSidebar()"></div>
+
+    <button class="hamburger" onclick="openSidebar()">☰</button>
+
+    <div class="sidebar" id="sidebar">
+        <h2>CivicLens</h2>
+        <a onclick="showSection('feed')">Issue Feed</a>
+        <a onclick="showSection('report')">Report Problem</a>
+        <a onclick="showSection('map-section')">Interactive Map</a>
+        <a onclick="showSection('leaderboard')">Leaderboard</a>
+        <a onclick="showSection('weekly-report')">Weekly Report</a>
+        <a class="logout-link" onclick="doLogout()">Logout</a>
+    </div>
+
+    <div class="main-content">
+
+        <div class="topbar">
+            <div id="points-display" class="points-box">Your Reputation: 0 Points</div>
+            <div>
+                <button id="themeBtn" onclick="toggleTheme()">🌙 Dark Mode</button>
+                <span class="user-label" id="userLabel"></span>
+            </div>
+        </div>
+
+        <div id="feed" class="section">
+            <div class="card">
+                <h3>Recent Reports</h3>
+                <div id="issue-list"></div>
+            </div>
+        </div>
+
+        <div id="report" class="section hidden">
+            <div class="card">
+                <h3>Report a New Issue</h3>
+                <p>Help us clean Bangalore! Fill in the details below.</p>
+                <form id="reportForm">
+                    <input type="text" id="issueTitle" placeholder="Issue Title (e.g. Big Pothole on MG Road)" required>
+                    <select id="issueCategory">
+                        <option value="Pothole">Pothole</option>
+                        <option value="Garbage">Garbage Dump</option>
+                        <option value="Drainage">Blocked Drain</option>
+                        <option value="Parking">Illegal Parking</option>
+                    </select>
+                    <textarea id="issueDesc" placeholder="Describe the problem..." rows="4"></textarea>
+                    <label>Upload Photo:</label>
+                    <input type="file" id="issuePhoto" accept="image/*">
+                    <div style="margin: 10px 0; display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="issueShareLocation" style="width: auto; margin: 0;" checked>
+                        <label for="issueShareLocation" style="font-size: 0.9rem; cursor: pointer; user-select: none;">Include location on the map</label>
+                    </div>
+                    <button type="button" onclick="submitReport()">Submit Report (+50 Points)</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="map-section" class="section hidden">
+            <div class="card">
+                <h3>Public Issue Map</h3>
+                <div id="map"></div>
+            </div>
+        </div>
+
+        <div id="leaderboard" class="section hidden">
+            <div class="card">
+                <h3>Top Civic Heroes</h3>
+                <ol id="hero-list">
+                    <li>Rahul - 450 pts</li>
+                    <li>Priya - 320 pts</li>
+                    <li>You - 0 pts</li>
+                </ol>
+            </div>
+        </div>
+
+        <div id="weekly-report" class="section hidden">
+            <div class="card" id="report-card">
+                <h3>Weekly Civic Report Card</h3>
+                <p>Date: May 14, 2026</p>
+                <hr>
+                <p>Issues Reported this week: <span id="report-count">0</span></p>
+                <p>Issues Resolved: <span id="report-resolved">0</span></p>
+                <p>Community Impact: <span id="report-impact">Low</span></p>
+                <button onclick="downloadReport()">Download PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
